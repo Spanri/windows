@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
+import Contacts from '@/components/Contacts'
 import About from '@/components/About'
 import NotFound from '@/components/NotFound'
 
@@ -14,6 +15,11 @@ export default new Router({
       path: '/',
       name: 'HelloWorld',
       component: HelloWorld
+    },
+    {
+      path: '/contacts',
+      name: 'Contacts',
+      component: Contacts
     },
     {
       path: '/about',

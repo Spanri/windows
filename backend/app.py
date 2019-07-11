@@ -1,12 +1,11 @@
-from models import Product, db
-from views import MyAdminIndexView
-from flask_admin.contrib import sqla
+from models import Product, db, User
+from views import MyAdminIndexView, MyModelView
 from random import *
 from flask import Flask, render_template, jsonify
 from flask_admin import Admin, AdminIndexView, BaseView
 from flask_admin.contrib.sqla import ModelView
 import flask_login as login
-# from views import ProductsAdminView, MyAdminView
+from werkzeug.security import generate_password_hash, check_password_hash
 import os
 
 app = Flask(__name__,
@@ -35,7 +34,7 @@ POSTGRES = {
     'host': 'localhost',
     'port': '5432',
 }
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://spanri:nysha2161@localhost:5432/windows'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://Spanri:nysha2161@localhost:5432/windows'
 
 # Initialize flask-login
 def init_login():
@@ -54,23 +53,16 @@ admin = Admin(
     app, 
     name='Юг Строй Окно',
     index_view=MyAdminIndexView(),
-    template_mode='bootstrap3',
+    base_template='home.html'
 )
 
-# Create customized model view class
-class MyModelView(sqla.ModelView):
-
-    def is_accessible(self):
-        return login.current_user.is_authenticated
-
-# admin.add_view(ModelView(Product, db.session, 'Товары'))
-admin.add_view(MyModelView(Product, db.session))
+admin.add_view(MyModelView(Product, db.session, 'Товары'))
 
 db.init_app(app)
+# test_user = User(login="test", password=generate_password_hash("test"))
+# print('test_user', test_user.password)
 
 if __name__ == '__main__':
-    test_user = User(login="test", password=generate_password_hash("test"))
-    db.session.add(test_user)
     app.run()
 
 

@@ -31,11 +31,22 @@ class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(100))
-    last_name = db.Column(db.String(100))
-    login = db.Column(db.String(80), unique=True)
-    email = db.Column(db.String(120))
-    password = db.Column(db.String(64))
+    login = db.Column(db.String(255), unique=True)
+    password = db.Column(db.String(255))
+
+    def __init__(self, login, password):
+        self.login = login
+        self.password = password
+
+    def __repr__(self):
+        return '<id {}>'.format(self.id)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'login': self.login,
+            'password': self.password
+        }
 
     # Flask-Login integration
     # NOTE: is_authenticated, is_active, and is_anonymous

@@ -1,52 +1,33 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>О программе.....</h2>
-    
-    <h2>Ecosystem</h2>
-    <ul>
-      <li>
-        <a
-          href="http://router.vuejs.org/"
-          target="_blank"
-        >
-          vue-router
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vuex.vuejs.org/"
-          target="_blank"
-        >
-          vuex
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vue-loader.vuejs.org/"
-          target="_blank"
-        >
-          vue-loader
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-        >
-          awesome-vue
-        </a>
-      </li>
-    </ul>
-  </div>
+    <footer>
+			Подвал сайта
+		</footer>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-  name: 'HelloWorld',
+  name: 'Footer',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      randomNumber: 0
+    }
+  },
+  created(){
+    this.getRandomFromBackend();
+  },
+  methods: {
+    getRandomFromBackend () {
+      const path = `http://localhost:5000/api/random`
+      axios.get(path)
+      .then(response => {
+        this.randomNumber = response.data.randomNumber
+      })
+      .catch(error => {
+        console.log(error)
+      })
     }
   }
 }

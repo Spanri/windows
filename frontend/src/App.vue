@@ -26,5 +26,8 @@ export default {
   /* background-image: url("./assets/banner-bg.jpg"); */
   background-repeat: no-repeat;
   padding-top: 50px;
+  display: grid;
+  grid-template-rows: max-content auto max-content;
+  min-height: 100vh;
 }
 </style>
