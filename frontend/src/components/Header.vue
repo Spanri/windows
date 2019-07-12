@@ -1,27 +1,35 @@
 <template>
-    <header v-scroll="handleScroll">
+  <div style="position:absolute;top:40px;width:100%;height:calc(100% - 50px)">
+    <header v-scroll="handleScroll" :style="{marginBottom: search ? '0' : '50px'}">
       <div class="header-inside">
         <router-link class="logo" to="/">
-          <img src="../assets/logo.png" alt="Логотип" width="40px">
-          <h4 style="display: inline-block;margin:0;vertical-align:middle">ЮГ СТРОЙ ОКНО</h4>
+          <img src="../assets/logo2.svg" alt="Логотип">
+          <!-- <p>ЮГ СТРОЙ ОКНО</p> -->
         </router-link>
         <div></div>
         <nav class="not-mobile">
           <router-link to="/">ГЛАВНАЯ</router-link>
-          <router-link to="/">МАГАЗИН</router-link>
+          <router-link to="/about">МАГАЗИН</router-link>
           <router-link to="#">БЛОГ</router-link>
-          <router-link to="/contacts">КОНТАКТЫ</router-link>
-          <a class="search">
+          <router-link to="/contacts" style="margin-right:40px;">КОНТАКТЫ</router-link>
+          <router-link to="#" style="margin-right:20px;padding-top:20px;">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14" viewBox="0 0 17 17">
+              <path d="M13 4v-2.394c0-0.885-0.737-1.606-1.643-1.606h-5.699c-0.905 0-1.642 0.721-1.642 1.606v2.394h-3.016v13h15v-13h-3zM5.016 1.606c0-0.334 0.288-0.606 0.642-0.606h5.699c0.355 0 0.643 0.272 0.643 0.606v2.394h-6.984v-2.394zM15 16h-13v-8h13v8zM15 7h-13v-2h2.016v0.643h1v-0.643h6.984v0.643h1v-0.643h2v2z" fill="#000000" />
+            </svg>
+          </router-link>
+          <a id="search">
             <svg @click="search = !search" width="23px" enable-background="new 0 0 100 100" id="Layer_1" version="1.1" viewBox="0 0 100 100" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path clip-rule="evenodd" d="M64.5,44.6c0-11.6-9.4-20.9-20.9-20.9c-11.6,0-20.9,9.4-20.9,20.9  c0,11.6,9.4,20.9,20.9,20.9C55.1,65.6,64.5,56.2,64.5,44.6z M80,79.3l-1.8,1.8l-19-19c-4.2,3.7-9.6,6-15.7,6  c-13,0-23.5-10.5-23.5-23.5c0-13,10.5-23.5,23.5-23.5c13,0,23.5,10.5,23.5,23.5c0,6-2.3,11.5-6,15.7L80,79.3z" /></svg>
           </a>
         </nav>
-        <div class="hamburger">
-          <span></span>
-          <span></span>
-          <span></span>
+        <div id="hamburger" :class="{open: hamOpen}" @click="hamOpen = !hamOpen;">
+          <div>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
         </div>
       </div>
-      <nav class="mobile">
+      <nav class="mobile" v-if="hamOpen">
           <router-link to="/">ГЛАВНАЯ</router-link>
           <router-link to="/">МАГАЗИН</router-link>
           <router-link to="#">БЛОГ</router-link>
@@ -30,17 +38,20 @@
             <svg @click="search = !search" width="23px" enable-background="new 0 0 100 100" id="Layer_1" version="1.1" viewBox="0 0 100 100" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path clip-rule="evenodd" d="M64.5,44.6c0-11.6-9.4-20.9-20.9-20.9c-11.6,0-20.9,9.4-20.9,20.9  c0,11.6,9.4,20.9,20.9,20.9C55.1,65.6,64.5,56.2,64.5,44.6z M80,79.3l-1.8,1.8l-19-19c-4.2,3.7-9.6,6-15.7,6  c-13,0-23.5-10.5-23.5-23.5c0-13,10.5-23.5,23.5-23.5c13,0,23.5,10.5,23.5,23.5c0,6-2.3,11.5-6,15.7L80,79.3z" /></svg>
           </a>
         </nav>
-      <b-navbar-nav v-if="search" class="search-panel">
-          <b-nav-form>
-          <b-form-input v-model="searchInput" size="sm" class="mr-sm-2 search-panel-input" placeholder="Введите название товара"></b-form-input>
-          <b-button size="sm" class="my-2 my-sm-0">
-              <svg @click="search = !search" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 20 20">
-                  <path fill="white" d="M10.707 10.5l5.646-5.646c0.195-0.195 0.195-0.512 0-0.707s-0.512-0.195-0.707 0l-5.646 5.646-5.646-5.646c-0.195-0.195-0.512-0.195-0.707 0s-0.195 0.512 0 0.707l5.646 5.646-5.646 5.646c-0.195 0.195-0.195 0.512 0 0.707 0.098 0.098 0.226 0.146 0.354 0.146s0.256-0.049 0.354-0.146l5.646-5.646 5.646 5.646c0.098 0.098 0.226 0.146 0.354 0.146s0.256-0.049 0.354-0.146c0.195-0.195 0.195-0.512 0-0.707l-5.646-5.646z"></path>
-              </svg>
-          </b-button>
-          </b-nav-form>
-      </b-navbar-nav>
+        <div v-if="search" id="search-panel">
+          <b-navbar-nav>
+            <b-nav-form>
+            <b-form-input v-model="searchInput" size="sm" class="mr-sm-2 search-panel-input" placeholder="Введите название товара"></b-form-input>
+            <b-button size="sm" class="my-2 my-sm-0">
+                <svg @click="search = !search" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 20 20">
+                    <path fill="white" d="M10.707 10.5l5.646-5.646c0.195-0.195 0.195-0.512 0-0.707s-0.512-0.195-0.707 0l-5.646 5.646-5.646-5.646c-0.195-0.195-0.512-0.195-0.707 0s-0.195 0.512 0 0.707l5.646 5.646-5.646 5.646c-0.195 0.195-0.195 0.512 0 0.707 0.098 0.098 0.226 0.146 0.354 0.146s0.256-0.049 0.354-0.146l5.646-5.646 5.646 5.646c0.098 0.098 0.226 0.146 0.354 0.146s0.256-0.049 0.354-0.146c0.195-0.195 0.195-0.512 0-0.707l-5.646-5.646z"></path>
+                </svg>
+            </b-button>
+            </b-nav-form>
+          </b-navbar-nav>
+        </div>
     </header>
+  </div>
 </template>
 
 <script>
@@ -52,6 +63,7 @@ export default {
         return {
             search: false,
             searchInput: '',
+            hamOpen: false,
         }
     },
     methods: {
@@ -59,7 +71,7 @@ export default {
             if (window.scrollY > 80) {
                 el.setAttribute(
                     'style',
-                    'width: 100%;'
+                    'max-width: 100%;'
                 )
             } else {
                 el.setAttribute(
@@ -79,8 +91,9 @@ header{
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+  margin-bottom: 50px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease-out;
+  /* transition: all 0.2s ease-out; */
   position: sticky;
   top: 0;
   background: white;
@@ -93,95 +106,103 @@ header{
 }
 .not-mobile{
   display: grid;
-  grid-template-columns: repeat(5,auto);
+  grid-template-columns: repeat(6,auto);
   margin: 0;
   padding: 0;
 }
 .mobile{
   display: grid;
-  grid-template-rows: repeat(5,auto);
+  grid-template-rows: repeat(6,auto);
   margin: 0;
   padding: 0;
+  transition: all .25s ease-out;
 }
+/**/
 .logo{
   color: black;
   padding-left: 50px;
   padding-top: 17px;
   padding-bottom: 12px;
 }
+.logo p{
+  display: inline-block;
+  margin: 0;
+  margin-left: 5px;
+  vertical-align: middle;
+}.logo img{
+  height: 40px;
+}
+/**/
+nav a{
+  font-size: 12px;
+  font-weight: 600;
+}
 .not-mobile a{
   color: black;
-  margin-right: 50px;
   padding-top: 25px;
   padding-bottom: 25px;
+  margin-right: 50px;
 }
-.not-mobile a:hover, .logo:hover{
+.mobile a{
+  color: black;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+nav a:hover, .logo:hover{
   cursor: pointer;
   color:#007CB7;
   text-decoration: none;
   transition: all 0.2s ease-out;
 }
-.search:hover{
+.router-link-active{
+  color:#007CB7;
+}
+/**/
+#search{
+  padding-top:20px;
+}
+#search:hover{
   cursor: pointer;
   fill:#007CB7;
   transition: all 0.2s ease-out;
 }
-/* header
-  width: 1200px
-  margin: 0px auto 0
-  /* margin-top: 50px;
-  margin-bottom: 50px
-  padding: 0
-  background: white !important
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1)
-  transition: all 0.2s ease-out
-  position: sticky
-  top: 0
-  display: grid
-  grid-template-columns: auto auto auto
-
-nav
-  max-width: 1200px
-  margin: 0 auto
-  padding: 0
-  > *
-    margin: 0
-    padding: 0
-    padding-top: 10px
-    padding-bottom: 10px
-    color:#007CB7
-*/
-.search a{
+#search a{
     margin-right: 0;
     padding-top: 11px !important;
 }
-.search:hover{
+#search:hover{
     fill:#007CB7;
 }
 
-.search-panel{
+#search-panel{
   width: 100%;
   background: linear-gradient(270deg, rgb(5, 149, 216) 0%, rgb(28, 98, 179) 100%);
   transition: all 0.2s ease-out;
 }
 
-.search-panel input{
+.navbar-nav{
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+#search-panel input{
   background: none;
   color: white;
   border: 0;
   width: calc(100% - 90px);
   padding: 25px;
   margin-left: 20px;
+  font-size: 14px;
 }
 
-.search-panel input:focus{
+#search-panel input:focus{
   border: 0;
   color: white;
   box-shadow: 0;
 }
 
-.search-panel input::placeholder{
-  color: rgb(238, 229, 229);
+#search-panel input::placeholder{
+  color: rgb(185, 211, 226);
 }
 
 .form-control:focus{
@@ -202,11 +223,88 @@ nav
     border: 0;
     padding-top: 0;
 }
+
+/* Гамбургер */
+#hamburger {
+  width: 30px;
+  height: 15px;
+  position: relative;
+  margin: 20px auto;
+  transform: rotate(0deg);
+  transition: .5s ease-in-out;
+  cursor: pointer;
+}
+#hamburger span {
+  display: block;
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  background: #007CB7;
+  border-radius: 5px;
+  opacity: 1;
+  left: 0;
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition: .25s ease-in-out;
+  -moz-transition: .25s ease-in-out;
+  -o-transition: .25s ease-in-out;
+  transition: .25s ease-in-out;
+}
+#hamburger span:nth-child(1) {
+  top: 0px;
+  -webkit-transform-origin: left center;
+  -moz-transform-origin: left center;
+  -o-transform-origin: left center;
+  transform-origin: left center;
+}
+
+#hamburger span:nth-child(2) {
+  top: 9px;
+  -webkit-transform-origin: left center;
+  -moz-transform-origin: left center;
+  -o-transform-origin: left center;
+  transform-origin: left center;
+}
+
+#hamburger span:nth-child(3) {
+  top: 18px;
+  -webkit-transform-origin: left center;
+  -moz-transform-origin: left center;
+  -o-transform-origin: left center;
+  transform-origin: left center;
+}
+
+#hamburger.open span:nth-child(1) {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+  top: -1.5px;
+  left: 4px;
+}
+
+#hamburger.open span:nth-child(2) {
+  width: 0%;
+  opacity: 0;
+}
+
+#hamburger.open span:nth-child(3) {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  top: 19.5px;
+  left: 4px;
+}
+
+/**/
 @media screen and (max-width: 820px){
   .logo{
     padding-left: 10px;
   }
-  nav a{
+  #search{
     margin-right: 20px;
   }
   .logo{
@@ -215,18 +313,34 @@ nav
 }
 @media screen and (min-width: 600px){
   .not-mobile{
-    display: block;
+    display: grid;
+  }
+  #hamburger{
+    display: none;
   }
   .mobile{
     display: none;
+  }
+  .logo p{
+    font-size: 24px;
   }
 }
 @media screen and (max-width: 600px){
   .not-mobile{
     display: none;
   }
+  #hamburger{
+    display: grid;
+    margin-right: 20px;
+  }
   .mobile{
-    display: block;
+    display: grid;
+  }
+  .logo p{
+    font-size: 18px;
+  }
+  .logo img{
+    width: 20px;
   }
 }
 </style>

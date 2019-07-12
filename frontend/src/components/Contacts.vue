@@ -1,32 +1,10 @@
 <template>
-    <div>
-			Контакты
-      <v-app id="inspire">
-        <div class="text-xs-center">
-          <v-menu open-on-hover top offset-y>
-            <template v-slot:activator="{ on }">
-              <v-btn
-                color="primary"
-                dark
-                v-on="on"
-              >
-                Dropdown
-              </v-btn>
-            </template>
-
-            <v-list>
-              <v-list-tile
-                v-for="(item, index) in items"
-                :key="index"
-                @click=""
-              >
-                <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-              </v-list-tile>
-            </v-list>
-          </v-menu>
-        </div>
-      </v-app>
-		</div>
+  <div class="contacts">
+    <div class="contacts2">
+      <h1 style="padding-right: 40px;font-family: 'Exo 2', sans-serif;text-align:right">Контакты</h1>
+      <p style="padding-right: 40px;font-family: 'Roboto', sans-serif;text-align:right">Какой-то текст.</p>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -48,18 +26,17 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
+.contacts{
+  background-image: url("../assets/common-banner2.jpg");
+  background-position: 45% 50%;
+  background-size: 120% auto;
+  background-repeat: no-repeat;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+.contacts2{
+  padding: 40px 0 100px 0;
+  color:white;
+  max-width: 1000px;
+  margin: 150px auto 0px;
+  width: 100%;
 }
 </style>
