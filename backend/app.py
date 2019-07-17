@@ -33,7 +33,7 @@ app.config.update(
     SECRET_KEY=os.environ['SECRET_KEY_WINDOWS'],
     DEBUG=True,
     FLASK_ADMIN_SWATCH='cerulean',
-    SQLALCHEMY_DATABASE_URI='postgresql://Spanri:'+os.environ['POSTGRESQL_WINDOWS']+'@localhost: 5432/windows'
+    SQLALCHEMY_DATABASE_URI=os.environ['DATABASE_URL'],
 )
 
 mail = Mail(app)
