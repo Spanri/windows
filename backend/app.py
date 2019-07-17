@@ -9,10 +9,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from flask_mail import Mail, Message
 import yaml
+from flask_cors import CORS
 
 app = Flask(__name__,
             static_folder = "./dist/static",
             template_folder = "./dist")
+
+CORS(app)
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
