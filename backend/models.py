@@ -10,8 +10,8 @@ class Product(db.Model):
     title = db.Column(db.String(100), unique=True)
     description = db.Column(db.String(1000), nullable=True)
     price = db.Column(db.Integer)
-    category = relationship(
-        "ProductCategory", backref="product", lazy=True)
+    # category = relationship(
+    #     "ProductCategory", backref="product", lazy=True)
 
     def __repr__(self):
         return '<id {}>'.format(self.id)
