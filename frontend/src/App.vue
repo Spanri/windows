@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <!-- <div style="height: 50px"></div> -->
     <Header></Header>
     <router-view/>
     <Footer></Footer>

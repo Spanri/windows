@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
 import Contacts from '@/components/Contacts'
-import About from '@/components/About'
+import Shop from '@/components/Shop'
+import Calculator from '@/components/Calculator'
 import NotFound from '@/components/NotFound'
 
 
@@ -22,9 +23,14 @@ export default new Router({
       component: Contacts
     },
     {
-      path: '/about',
-      name: 'About',
-      component: About
+      path: '/shop',
+      name: 'Shop',
+      component: Shop,
+    },
+    {
+      path: '/calc',
+      name: 'Calculator',
+      component: Calculator
     },
     {
       path: '*',

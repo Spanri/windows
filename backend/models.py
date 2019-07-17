@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import relationship
 
 db = SQLAlchemy()
 
@@ -9,23 +10,31 @@ class Product(db.Model):
     title = db.Column(db.String(100), unique=True)
     description = db.Column(db.String(1000), nullable=True)
     price = db.Column(db.Integer)
-
-    def __init__(self, title, description, price):
-        self.title = title
-        self.description = description
-        self.price = price
+    category = relationship(
+        "ProductCategory", backref="product", lazy=True)
 
     def __repr__(self):
         return '<id {}>'.format(self.id)
 
-    def serialize(self):
-        return {
-            'id': self.id,
-            'title': self.title,
-            'description': self.description,
-            'price': self.price
-        }
+class ProductCategory(db.Model):
+    __tablename__ = 'productcategoties'
 
+    id = db.Column(db.Integer, primary_key=True)
+    category = db.Column(db.String(200), unique=True)
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
+
+    def __repr__(self):
+        return '<id {}>'.format(self.id)
+
+class Contact(db.Model):
+    __tablename__ = 'contacts'
+
+    id = db.Column(db.Integer, primary_key=True)
+    parameter = db.Column(db.String(100), unique=True)
+    description = db.Column(db.String(1000), nullable=True)
+
+    def __repr__(self):
+        return '<id {}>'.format(self.id)
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -34,23 +43,9 @@ class User(db.Model):
     login = db.Column(db.String(255), unique=True)
     password = db.Column(db.String(255))
 
-    def __init__(self, login, password):
-        self.login = login
-        self.password = password
-
     def __repr__(self):
         return '<id {}>'.format(self.id)
-
-    def serialize(self):
-        return {
-            'id': self.id,
-            'login': self.login,
-            'password': self.password
-        }
-
-    # Flask-Login integration
-    # NOTE: is_authenticated, is_active, and is_anonymous
-    # are methods in Flask-Login < 0.3.0
+        
     @property
     def is_authenticated(self):
         return True

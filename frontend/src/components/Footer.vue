@@ -120,4 +120,10 @@ p{
   font-family: 'Roboto', sans-serif;
   color:#777777;
 }
+@media screen and (max-width: 500px){
+  .footer{
+    grid-template-columns: auto;
+    grid-template-rows: repeat(4, auto);
+  }
+}
 </style>

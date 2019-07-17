@@ -1,42 +1,218 @@
 <template>
-  <div class="contacts">
-    <div class="contacts2">
-      <h1 style="padding-right: 40px;font-family: 'Exo 2', sans-serif;text-align:right">Контакты</h1>
-      <p style="padding-right: 40px;font-family: 'Roboto', sans-serif;text-align:right">Какой-то текст.</p>
+  <div>
+    <Banner text='Контакты'></Banner>
+    <div class="contacts">
+      <div class="other">
+        <GmapMap ref="mapRef"
+          :center="{lat:45.038935, lng:38.985288}"
+          :zoom="11"
+          map-type-id="roadmap"
+          class="map"
+        >
+          <GmapMarker ref="myMarker"
+            :position="google && new google.maps.LatLng(45.058801, 38.962732)"
+            @click="infoWinOpen=!infoWinOpen"
+          />
+
+          <gmap-info-window
+            :position="google && new google.maps.LatLng(45.058801, 38.962732)"
+            :opened="infoWinOpen"
+            @closeclick="infoWinOpen=false"
+            :options="{ pixelOffset: {
+                width: 0,
+                height: -35
+            } }"
+          >
+            <div v-html="infoContent"></div>
+          </gmap-info-window>
+        </GmapMap>
+        <div class="contacts-info">
+          <div style="margin:0 auto;max-width:600px;">
+            <h4>Режим работы:</h4>
+            <p>{{work_schedule}}</p>
+            <h4>Телефон:</h4>
+            <p>{{phone}}</p>
+          </div>
+          <form prevent-default>
+            <h2 style="color: black;text-align: center">Обратная связь</h2>
+            <p>ИМЯ</p>
+            <input v-model="nameFeedback" placeholder="Введите имя">
+            <p>EMAIL</p>
+            <input v-model="email" placeholder="Введите email">
+            <p>ТЕКСТ СООБЩЕНИЯ</p>
+            <textarea v-model="message" placeholder="Введите текст сообщения"></textarea>
+            <button @click.prevent="feedback()">ОТПРАВИТЬ</button>
+            <p v-if="response" style="padding-top: 20px; padding-bottom: 0">{{response}}</p>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+import {gmapApi} from 'vue2-google-maps'
+import Banner from './Banner'
 
 export default {
   name: 'Contacts',
+  components: { Banner },
   data () {
     return {
-      items: [
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Click Me' },
-        { title: 'Click Me 2' }
-      ]
+      name: '',
+      address: '',
+      work_schedule: '',
+      phone: '',
+      infoWinOpen: true,
+      nameFeedback: '',
+      email: '',
+      message: '',
+      response: '',
     }
   },
+  created(){
+    axios.get('http://localhost:5000/api/contacts')
+    .then(response => {
+      let resp = response.data;
+      resp.forEach(r => {
+        this[r.parameter] = r.description;
+      });
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  },
+  computed: {
+    google: gmapApi,
+    infoContent(){
+      return this.name + '<br>' + this.address
+    }
+  },
+  methods: {
+    feedback(){
+      this.response = 'Сообщение отправляется...';
+      axios.post('http://localhost:5000/api/mail', {
+        name: this.nameFeedback,
+        email: this.email,
+        message: this.message
+      })
+      .then(response => {
+        let resp = response.data;
+        console.log(resp)
+        this.response = 'Сообщение отправлено.';
+        this.nameFeedback = '';
+        this.email = '';
+        this.message = '';
+        setTimeout(() => {
+          this.response = '';
+        }, 5000);
+      })
+      .catch(error => {
+        this.response = 'Ошибка.';
+        console.log(error)
+      })
+    }
+  }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .contacts{
-  background-image: url("../assets/common-banner2.jpg");
-  background-position: 45% 50%;
-  background-size: 120% auto;
-  background-repeat: no-repeat;
-}
-.contacts2{
-  padding: 40px 0 100px 0;
+  padding: 0;
   color:white;
-  max-width: 1000px;
-  margin: 150px auto 0px;
+  max-width: 1200px;
+  margin: 20px auto;
   width: 100%;
+}
+.other{
+  color: black;
+  padding: 50px;
+  margin: 0;
+  display: grid;
+  grid-template-columns: max-content auto;
+}
+.map{
+  width: 600px;
+  height: 550px;
+  z-index: 0;
+  margin-top: 0px;
+  margin-left: 0px;
+  margin: 0 auto;
+}
+.contacts-info{
+  margin-top: 0px;
+  margin-bottom: 50px;
+  margin-right: 0px;
+  text-align: left;
+  padding-left: 80px;
+}
+/* Обратная связь */
+form{
+  color: black;
+  border: rgb(202, 201, 201) 2px solid;
+  border-radius: 5px;
+  padding: 30px 40px;
+  max-width: 600px;
+  margin: 40px auto 0px;
+  text-align: left;
+}
+form p{
+  margin-bottom: 10px;
+}
+input, textarea{
+  border: rgb(202, 201, 201) 1px solid;
+  padding: 7px 12px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+button{
+  padding: 10px 30px;
+  background:#007CB7;
+  color: white;
+}
+@media screen and (max-width: 1150px){
+  .other{
+    grid-template-rows: max-content auto;
+    grid-template-columns: auto;
+  }
+  .map{
+    margin-bottom: 30px;
+  }
+  .contacts-info{
+    padding: 0;
+  }
+}
+@media screen and (max-width: 700px){
+  .map{
+    width: 450px;
+    height: 500px;
+  }
+}
+@media screen and (max-width: 550px){
+  .map{
+    width: 300px;
+    height: 400px;
+  }
+}
+@media screen and (max-width: 400px){
+  .map{
+    width: 250px;
+    height: 300px;
+  }
+  .contacts-info h4{
+    font-size: 18px;
+  }
+  .contacts-info h5{
+    font-size: 12px;
+  }
+  form{
+    font-size: 12px;
+    padding: 20px;
+  }
+  form h2{
+    font-size: 18px;
+  }
 }
 </style>

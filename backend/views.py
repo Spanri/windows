@@ -1,7 +1,7 @@
 from flask_admin.contrib import sqla
 from flask_admin import Admin, AdminIndexView, BaseView, expose, helpers
-from flask import Flask, url_for, redirect, render_template, request
-from models import db, User
+from flask import Flask, url_for, redirect, render_template, request, jsonify, json
+from models import db, User, Product, Contact
 from wtforms import form, fields, validators
 from werkzeug.security import generate_password_hash, check_password_hash
 import flask_admin as admin
@@ -13,20 +13,11 @@ def logged_in():
 
 # Create customized model view class
 class MyModelView(sqla.ModelView):
-    column_labels = {
-        'title': 'Название',
-        'description': 'Описание',
-        'price': 'Цена',
-        'login': 'Логин',
-        'password': 'Пароль'
-    }
-
     def is_accessible(self):
         return login.current_user.is_authenticated
 
 # Create customized index view class that handles login & registration
 class MyAdminIndexView(AdminIndexView):
-
     @expose('/')
     def index(self):
         if not login.current_user.is_authenticated:
