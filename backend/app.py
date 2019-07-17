@@ -11,8 +11,8 @@ from flask_mail import Mail, Message
 import yaml
 
 app = Flask(__name__,
-            static_folder = "../dist/static",
-            template_folder = "../dist")
+            static_folder = "./dist/static",
+            template_folder = "./dist")
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
