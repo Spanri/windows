@@ -54,6 +54,7 @@
 import axios from 'axios'
 import {gmapApi} from 'vue2-google-maps'
 import Banner from './Banner'
+import path from '../config'
 
 export default {
   name: 'Contacts',
@@ -72,7 +73,7 @@ export default {
     }
   },
   created(){
-    axios.get('http://localhost:5000/api/contacts')
+    axios.get(path+'/api/contacts')
     .then(response => {
       let resp = response.data;
       resp.forEach(r => {
@@ -92,7 +93,7 @@ export default {
   methods: {
     feedback(){
       this.response = 'Сообщение отправляется...';
-      axios.post('http://localhost:5000/api/mail', {
+      axios.post(path+'/api/mail', {
         name: this.nameFeedback,
         email: this.email,
         message: this.message
