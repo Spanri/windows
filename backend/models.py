@@ -21,7 +21,7 @@ class ProductCategory(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     category = db.Column(db.String(200), unique=True)
-    product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
+    # product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
 
     def __repr__(self):
         return '<id {}>'.format(self.id)
