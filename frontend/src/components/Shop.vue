@@ -12,7 +12,7 @@
             class="card"
             v-bind:key="index"
             v-for="(item, index) in items"
-            @click="$router.push({ name: 'ShopItem', params: { id: item.id } })">
+            @click="goToShopItem(item)">
           <img :src="path+'/static/'+item.img">
           <p>{{item.title}}</p>
           <p>₽{{item.price}}</p>
@@ -56,6 +56,10 @@ export default {
     })
   },
   methods: {
+    goToShopItem(item){
+      let id = item.id.toString()
+      this.$router.push({ name: 'ShopItem', params: { id: id } })
+    }
   }
 }
 </script>

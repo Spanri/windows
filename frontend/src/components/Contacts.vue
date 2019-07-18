@@ -27,21 +27,21 @@
           </gmap-info-window>
         </GmapMap>
         <div class="contacts-info">
-          <div style="margin:0 auto;max-width:600px;">
+          <div style="margin:0 auto;text-align: left;max-width:600px;">
             <h4>Режим работы:</h4>
             <p>{{work_schedule}}</p>
             <h4>Телефон:</h4>
             <p>{{phone}}</p>
           </div>
           <form prevent-default>
-            <h2 style="color: black;text-align: center">Обратная связь</h2>
-            <p>ИМЯ</p>
+            <h4 style="color: black;text-align: center">Обратная связь</h4>
+            <p>Имя</p>
             <input v-model="nameFeedback" placeholder="Введите имя">
-            <p>EMAIL</p>
+            <p>Email</p>
             <input v-model="email" placeholder="Введите email">
-            <p>ТЕКСТ СООБЩЕНИЯ</p>
+            <p>Текст сообщения</p>
             <textarea v-model="message" placeholder="Введите текст сообщения"></textarea>
-            <button @click.prevent="feedback()">ОТПРАВИТЬ</button>
+            <button @click.prevent="feedback()" style="text-align: center">ОТПРАВИТЬ</button>
             <p v-if="response" style="padding-top: 20px; padding-bottom: 0">{{response}}</p>
           </form>
         </div>
@@ -147,7 +147,6 @@ export default {
   margin-top: 0px;
   margin-bottom: 50px;
   margin-right: 0px;
-  text-align: left;
   padding-left: 80px;
 }
 /* Обратная связь */
@@ -158,10 +157,11 @@ form{
   padding: 30px 40px;
   max-width: 600px;
   margin: 40px auto 0px;
-  text-align: left;
+  font-size: 14px;
 }
 form p{
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+  text-align: left;
 }
 input, textarea{
   border: rgb(202, 201, 201) 1px solid;
@@ -173,6 +173,7 @@ button{
   padding: 10px 30px;
   background:#007CB7;
   color: white;
+  border: 0;
 }
 @media screen and (max-width: 1150px){
   .other{
