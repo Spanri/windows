@@ -12,7 +12,7 @@
           <router-link to="/shop">ТОВАРЫ</router-link>
           <router-link to="/calc">КАЛЬКУЛЯТОР</router-link>
           <router-link to="/contacts" style="margin-right:40px;">КОНТАКТЫ</router-link>
-          <router-link to="#" style="margin-right:20px;padding-top:25px;">
+          <router-link to="/cart" style="margin-right:20px;padding-top:25px;">
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14" viewBox="0 0 17 17">
               <path d="M13 4v-2.394c0-0.885-0.737-1.606-1.643-1.606h-5.699c-0.905 0-1.642 0.721-1.642 1.606v2.394h-3.016v13h15v-13h-3zM5.016 1.606c0-0.334 0.288-0.606 0.642-0.606h5.699c0.355 0 0.643 0.272 0.643 0.606v2.394h-6.984v-2.394zM15 16h-13v-8h13v8zM15 7h-13v-2h2.016v0.643h1v-0.643h6.984v0.643h1v-0.643h2v2z" fill="#000000" />
             </svg>
@@ -34,7 +34,12 @@
           <router-link to="/shop">ТОВАРЫ</router-link>
           <router-link to="/calc">КАЛЬКУЛЯТОР</router-link>
           <router-link to="/contacts">КОНТАКТЫ</router-link>
-          <a class="search">
+          <router-link to="/cart" style="margin-right:20px;padding-top:25px;">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14" viewBox="0 0 17 17">
+              <path d="M13 4v-2.394c0-0.885-0.737-1.606-1.643-1.606h-5.699c-0.905 0-1.642 0.721-1.642 1.606v2.394h-3.016v13h15v-13h-3zM5.016 1.606c0-0.334 0.288-0.606 0.642-0.606h5.699c0.355 0 0.643 0.272 0.643 0.606v2.394h-6.984v-2.394zM15 16h-13v-8h13v8zM15 7h-13v-2h2.016v0.643h1v-0.643h6.984v0.643h1v-0.643h2v2z" fill="#000000" />
+            </svg>
+          </router-link>
+          <a id="search">
             <svg @click="search = !search" width="23px" enable-background="new 0 0 100 100" id="Layer_1" version="1.1" viewBox="0 0 100 100" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path clip-rule="evenodd" d="M64.5,44.6c0-11.6-9.4-20.9-20.9-20.9c-11.6,0-20.9,9.4-20.9,20.9  c0,11.6,9.4,20.9,20.9,20.9C55.1,65.6,64.5,56.2,64.5,44.6z M80,79.3l-1.8,1.8l-19-19c-4.2,3.7-9.6,6-15.7,6  c-13,0-23.5-10.5-23.5-23.5c0-13,10.5-23.5,23.5-23.5c13,0,23.5,10.5,23.5,23.5c0,6-2.3,11.5-6,15.7L80,79.3z" /></svg>
           </a>
         </nav>

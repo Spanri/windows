@@ -16,7 +16,8 @@
             <div @click="quantity>1 ? quantity-=1 : ''" class="quantity-button quantity-down">-</div>
           </div>
         </div>
-        <button @click="">В КОРЗИНУ</button>
+        {{$store.getters.getShopItems}}
+        <button @click="addToCart()">В КОРЗИНУ</button>
       </div>
     </div>
   </div>
@@ -44,12 +45,16 @@ export default {
     axios.post(path+'/api/product', {id: this.id})
     .then(response => {
       this.item = response.data;
+
     })
     .catch(error => {
       console.log(error)
     })
   },
   methods: {
+    addToCart(){
+      this.$store.commit('setShopItem', this.item.id);
+    }
   }
 }
 </script>

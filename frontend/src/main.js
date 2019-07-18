@@ -6,9 +6,10 @@ import router from './router'
 import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import Vuetify from 'vuetify'
+// import Vuetify from 'vuetify'
 // import 'vuetify/dist/vuetify.min.css'
 import * as VueGoogleMaps from 'vue2-google-maps'
+import store from './store'
 
 Vue.use(VueGoogleMaps, {
   load: {
@@ -17,7 +18,8 @@ Vue.use(VueGoogleMaps, {
     libraries: 'places',
   },
 })
-Vue.use(Vuetify)
+// Vue.use(Vuetify)
+
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false
 
@@ -36,6 +38,7 @@ Vue.directive('scroll', {
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
