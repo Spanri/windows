@@ -1,15 +1,26 @@
 from models import Product, db, User, Contact
-from views import MyAdminIndexView, MyModelView
+from views import MyAdminIndexView, MyModelView, ImageView
+import os
+import os.path as op
+import yaml
 from random import *
-from flask import Flask, render_template, jsonify, json, request
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask import Flask, render_template, jsonify, json, request, url_for, redirect
 from flask_admin import Admin, AdminIndexView, BaseView
 from flask_admin.contrib.sqla import ModelView
-import flask_login as login
-from werkzeug.security import generate_password_hash, check_password_hash
-import os
 from flask_mail import Mail, Message
-import yaml
 from flask_cors import CORS
+import flask_login as login
+
+from wtforms import fields, widgets
+from sqlalchemy.event import listens_for
+
+# Create directory for file fields to use
+file_path = op.join(op.dirname(__file__), './dist/static')
+try:
+    os.mkdir(file_path)
+except OSError:
+    pass
 
 app = Flask(__name__,
             static_folder = "./dist/static",
@@ -21,7 +32,6 @@ CORS(app)
 @app.route('/<path:path>')
 def catch_all(path):
     return render_template("index.html")
-
 
 app.config.update(
     # SMTP сервер
@@ -37,6 +47,7 @@ app.config.update(
     DEBUG=True,
     FLASK_ADMIN_SWATCH='cerulean',
     SQLALCHEMY_DATABASE_URI=os.environ['DATABASE_URL'],
+    UPLOAD_FOLDER='/'
 )
 
 mail = Mail(app)
@@ -70,15 +81,29 @@ admin = Admin(
 )
 
 admin.add_view(MyModelView(Contact, db.session, 'Контакты'))
-admin.add_view(MyModelView(Product, db.session, 'Товары'))
+admin.add_view(ImageView(Product, db.session, 'Товары'))
 
 db.init_app(app)
-# test_user = User(login="test", password=generate_password_hash("test"))
-# print('test_user', test_user.password)
 
 if __name__ == '__main__':
     app.run()
 
+
+@listens_for(Product, 'after_delete')
+def del_image(mapper, connection, target):
+    if target.path:
+        # Delete image
+        try:
+            os.remove(op.join(file_path, target.path))
+        except OSError:
+            pass
+
+        # Delete thumbnail
+        try:
+            os.remove(op.join(file_path,
+                              form.thumbgen_filename(target.path)))
+        except OSError:
+            pass
 
 @app.route("/api/mail", methods=['POST'])
 def mailApi():
@@ -90,16 +115,7 @@ def mailApi():
         mail.send(msg)
         return 'Mail sent!'
     except Exception as e:
-        print(str(e))
         return str(e)
-
-
-@app.route('/api/random')
-def random():
-    response = {
-        'randomNumber': randint(1, 100)
-    }
-    return jsonify(response)
 
 
 @app.route('/api/feedback', methods=['GET'])
@@ -115,6 +131,27 @@ def feedback():
     except Exception as e:
         return str(e)
 
+@app.route('/api/product', methods=['POST'])
+def product():
+    try:
+        data = json.loads(request.data)
+        p = Product.query.filter_by(id=data['id']).first()
+        res = json.dumps(p.serialize(), ensure_ascii=False).encode('utf8')
+        return jsonify(yaml.load(res, Loader=yaml.FullLoader))
+    except Exception as e:
+        return str(e)
+
+@app.route('/api/products', methods=['GET'])
+def products():
+    try:
+        p = Product.query.all()
+        response = []
+        for idx, val in enumerate(p):
+            v = json.dumps(val.serialize(), ensure_ascii=False).encode('utf8')
+            response.append(yaml.load(v, Loader=yaml.FullLoader))
+        return jsonify(response)
+    except Exception as e:
+        return str(e)
 
 @app.route('/api/contacts', methods=['GET'])
 def contacts():

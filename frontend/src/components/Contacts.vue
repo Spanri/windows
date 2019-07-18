@@ -54,7 +54,7 @@
 import axios from 'axios'
 import {gmapApi} from 'vue2-google-maps'
 import Banner from './Banner'
-import path from '../config'
+import {path} from '../config'
 
 export default {
   name: 'Contacts',
@@ -75,6 +75,7 @@ export default {
   created(){
     axios.get(path+'/api/contacts')
     .then(response => {
+      console.log(response)
       let resp = response.data;
       resp.forEach(r => {
         this[r.parameter] = r.description;
@@ -136,7 +137,7 @@ export default {
 }
 .map{
   width: 600px;
-  height: 550px;
+  height: 600px;
   z-index: 0;
   margin-top: 0px;
   margin-left: 0px;

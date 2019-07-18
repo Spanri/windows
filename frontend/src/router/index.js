@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 import Contacts from '@/components/Contacts'
 import Shop from '@/components/Shop'
+import ShopItem from '@/components/ShopItem'
 import Calculator from '@/components/Calculator'
 import NotFound from '@/components/NotFound'
 
@@ -26,6 +27,12 @@ export default new Router({
       path: '/shop',
       name: 'Shop',
       component: Shop,
+    },
+    {
+      path: '/shop/:id',
+      name: 'ShopItem',
+      component: ShopItem,
+      props: true,
     },
     {
       path: '/calc',

@@ -8,9 +8,13 @@
         <p>Ламинация</p>
       </nav>
       <div class="right-part">
-        <div class="card" v-bind:key="index" v-for="(item, index) in items">
-          <img :src="item.img">
-          <p>{{item.name}}</p>
+        <div
+            class="card"
+            v-bind:key="index"
+            v-for="(item, index) in items"
+            @click="$router.push({ name: 'ShopItem', params: { id: item.id } })">
+          <img :src="path+'/static/'+item.img">
+          <p>{{item.title}}</p>
           <p>₽{{item.price}}</p>
         </div>
       </div>
@@ -21,6 +25,7 @@
 <script>
 import axios from 'axios'
 import Banner from './Banner'
+import {path} from '../config'
 
 export default {
   name: 'Shop',
@@ -30,19 +35,25 @@ export default {
   },
   data () {
     return {
-      items: [
-        { name: 'ОКНО ЕЛЕНА 90см*15см', price: 11999, img: '../assets/f1.png'},
-        { name: 'ОКНО АФРОДИТА 150см*10см', price: 22999, img: '../assets/f2.png'},
-        { name: 'ОКНО ЕЛЕНА 90см*15см', price: 11999, img: '../assets/f3.png'},
-        { name: 'ОКНО АФРО 150см*10см', price: 22999, img: '../assets/f4.png'},
-        { name: 'ОКНО ЕЛЕНА 90см*15см', price: 11999, img: '../assets/f3.png'},
-        { name: 'ОКНО АФРО 150см*10см', price: 22999, img: '../assets/f2.png'},
-        { name: 'ОКНО ЕЛЕНА 90см*15см', price: 11999, img: '../assets/f1.png'},
-        { name: 'ОКНО АФРО 150см*10см', price: 22999, img: '../assets/f2.png'},
-        { name: 'ОКНО ЕЛЕНА 90см*15см', price: 11999, img: '../assets/f3.png'},
-        { name: 'ОКНО АФРО 150см*10см', price: 22999, img: '../assets/f4.png'},
-      ]
+      items: [],
+      price: '',
+      title: '',
+      description: '',
+      path: path
     }
+  },
+  created(){
+    axios.get(path+'/api/products')
+    .then(response => {
+      console.log(response.data)
+      let resp = response.data;
+      resp.forEach(r => {
+        this.items.push(r);
+      });
+    })
+    .catch(error => {
+      console.log(error)
+    })
   },
   methods: {
   }
@@ -90,9 +101,12 @@ nav p:hover{
   border: 0;
   vertical-align: top;
 }
+.card:hover{
+  background:rgb(213, 238, 156);
+  cursor: pointer;
+}
 .card img{
-  width: 200px;
-  border: rgb(213, 238, 156) 1px solid;
+  height: 200px;
 }
 .card p{
   padding: 7px 15px;
