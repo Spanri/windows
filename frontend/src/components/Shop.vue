@@ -45,7 +45,6 @@ export default {
   created(){
     axios.get(path+'/api/products')
     .then(response => {
-      console.log(response.data)
       let resp = response.data;
       resp.forEach(r => {
         this.items.push(r);

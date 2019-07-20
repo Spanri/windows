@@ -20,11 +20,20 @@
                 <p style="display:inline-block" @click="goToShopItem(item)">{{item.title}}</p>
               </td>
               <td>{{item.price}}</td>
-              <td>{{item.quantity}}</td>
+              <td>
+                <div class="quantity">
+                  <input class="quantity-number" min="1" type="number" v-model="item.quantity">
+                  <div class="quantity-nav">
+                    <div @click="quantityUp(index)" class="quantity-button quantity-up">+</div>
+                    <div @click="quantityDown(index)" class="quantity-button quantity-down">-</div>
+                  </div>
+                </div>
+              </td>
               <td>{{item.price*item.quantity}}</td>
             </tr>
           </tbody>
         </table>
+        <button>ОФОРМИТЬ</button>
     </div>
   </div>
 </template>
@@ -46,16 +55,18 @@ export default {
       price: '',
       title: '',
       description: '',
+      quantity: 2,
       path: path
     }
   },
   created(){
-    let shopItem = this.$store.getters.getShopItems;
-    shopItem.forEach(id => {
-      axios.post(path+'/api/product', {id: id})
+    let shopItems = this.$store.getters.getShopItems;
+    shopItems.forEach(s => {
+      axios.post(path+'/api/product', {id: s.id})
       .then(response => {
-        console.log(response.data)
-        this.items.push(response.data);
+        let sRes = response.data;
+        sRes.quantity = s.quantity;
+        this.items.push(sRes);
       })
       .catch(error => {
         console.log(error)
@@ -64,18 +75,33 @@ export default {
   },
   methods: {
     goToShopItem(item){
-      let id = item.id.toString()
-      this.$router.push({ name: 'ShopItem', params: { id: id } })
+      let id = item.id.toString();
+      this.$router.push({ name: 'ShopItem', params: { id: id } });
     },
     deleteShopItem(item){
       this.$store.commit('deleteShopItem', this.item.id);
-    }
+    },
+    quantityUp(i){
+      this.items[i].quantity=Number(this.items[i].quantity)+1;
+      this.$store.commit('setShopItemId', this.items[i]);
+    },
+    quantityDown(i){
+      this.items[i].quantity>1 ? this.items[i].quantity-=1 : '';
+      this.$store.commit('setShopItemId', this.items[i]);
+    },
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+@import '../assets/css/quantity.css';
+@import '../assets/css/button.css';
+
+button{
+  text-align: left;
+  margin-bottom: 50px;
+}
 .cart{
   padding: 0;
   max-width: 1000px;

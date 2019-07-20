@@ -110,7 +110,7 @@ def mailApi():
     try:
         data = json.loads(request.data)
         msg = Message("Обратная связь с сайта ЮСО, " +
-            data['name']+" , "+data['email'], recipients=["kozlova9v@mail.ru"])
+            data['name']+", "+data['email'], recipients=[data['email_where']])
         msg.body = data['message']
         mail.send(msg)
         return 'Mail sent!'

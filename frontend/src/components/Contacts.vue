@@ -4,18 +4,18 @@
     <div class="contacts">
       <div class="other">
         <GmapMap ref="mapRef"
-          :center="{lat:45.038935, lng:38.985288}"
+          :center="{lat:Number(latitude), lng:Number(longitude)}"
           :zoom="11"
           map-type-id="roadmap"
           class="map"
         >
           <GmapMarker ref="myMarker"
-            :position="google && new google.maps.LatLng(45.058801, 38.962732)"
+            :position="google && new google.maps.LatLng(latitude, longitude)"
             @click="infoWinOpen=!infoWinOpen"
           />
 
           <gmap-info-window
-            :position="google && new google.maps.LatLng(45.058801, 38.962732)"
+            :position="google && new google.maps.LatLng(latitude, longitude)"
             :opened="infoWinOpen"
             @closeclick="infoWinOpen=false"
             :options="{ pixelOffset: {
@@ -38,7 +38,7 @@
             <p>Имя</p>
             <input v-model="nameFeedback" placeholder="Введите имя">
             <p>Email</p>
-            <input v-model="email" placeholder="Введите email">
+            <input v-model="email2" placeholder="Введите email">
             <p>Текст сообщения</p>
             <textarea v-model="message" placeholder="Введите текст сообщения"></textarea>
             <button @click.prevent="feedback()" style="text-align: center">ОТПРАВИТЬ</button>
@@ -65,9 +65,12 @@ export default {
       address: '',
       work_schedule: '',
       phone: '',
+      email: '',
+      email2: '',
+      latitude: '',
+      longitude: '',
       infoWinOpen: true,
       nameFeedback: '',
-      email: '',
       message: '',
       response: '',
     }
@@ -96,15 +99,16 @@ export default {
       this.response = 'Сообщение отправляется...';
       axios.post(path+'/api/mail', {
         name: this.nameFeedback,
-        email: this.email,
-        message: this.message
+        email: this.email2,
+        message: this.message,
+        email_where: this.email
       })
       .then(response => {
         let resp = response.data;
         console.log(resp)
         this.response = 'Сообщение отправлено.';
         this.nameFeedback = '';
-        this.email = '';
+        this.email2 = '';
         this.message = '';
         setTimeout(() => {
           this.response = '';
@@ -121,6 +125,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+@import '../assets/css/button.css';
+
 .contacts{
   padding: 0;
   color:white;
@@ -168,12 +174,6 @@ input, textarea{
   padding: 7px 12px;
   width: 100%;
   margin-bottom: 20px;
-}
-button{
-  padding: 10px 30px;
-  background:#007CB7;
-  color: white;
-  border: 0;
 }
 @media screen and (max-width: 1150px){
   .other{

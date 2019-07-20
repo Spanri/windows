@@ -16,8 +16,8 @@
             <div @click="quantity>1 ? quantity-=1 : ''" class="quantity-button quantity-down">-</div>
           </div>
         </div>
-        {{$store.getters.getShopItems}}
         <button @click="addToCart()">В КОРЗИНУ</button>
+        <p v-if="added">{{added}}</p>
       </div>
     </div>
   </div>
@@ -39,6 +39,7 @@ export default {
       item: {},
       path: path,
       quantity: 1,
+      added: '',
     }
   },
   created(){
@@ -53,7 +54,14 @@ export default {
   },
   methods: {
     addToCart(){
-      this.$store.commit('setShopItem', this.item.id);
+      this.$store.commit('setShopItem', {
+        id: this.item.id,
+        quantity: this.quantity
+      });
+      this.added = this.$store.getters.getStatus == 200 ? 'Добавлено.' : 'Этот товар уже есть в корзине.';
+      setTimeout(() => {
+          this.added = '';
+        }, 3000);
     }
   }
 }
@@ -61,6 +69,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+@import '../assets/css/button.css';
+
 .shop-item0{
   background-image: url("../assets/common-banner2.jpg");
   background-position: right -65px;
@@ -86,30 +96,6 @@ img{
 }
 .info > p{
   margin: 15px 0;
-}
-button{
-  background: linear-gradient(90deg, rgb(5, 149, 216) 0%, rgb(28, 98, 179) 100%);
-  color: white;
-  padding: 8px 15px;
-  position: relative;
-  overflow: hidden;
-  margin: 0 0 0 20px;
-  border: 0;
-}
-button::before{
-  position: absolute;
-  opacity: .4;
-  left: -145px;
-  top: 0;
-  height: 100%;
-  width: 100%;
-  content: "";
-  background: rgb(0, 40, 85);
-  transform: skew(40deg);
-  transition: all 0.4s ease 0s;
-}
-button:hover::before{
-	left: 180px;
 }
 /**/
 .quantity {

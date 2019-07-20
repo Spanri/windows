@@ -56,7 +56,11 @@
             </select>
           </div>
         </div>
-        <p>ИТОГО: {{formFactor}} {{width}} {{height}} {{windowSill}} {{tint}} {{lamination}}</p>
+        <div class="total">
+          <p>ИТОГО: {{formFactor}} {{width}} {{height}} {{windowSill}} {{tint}} {{lamination}}</p>
+          <button>ДОБАВИТЬ В КОРЗИНУ</button>
+        </div>
+
       </div>
     </div>
   </div>
@@ -84,6 +88,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+@import '../assets/css/button.css';
+
 .calc{
   padding: 0;
   max-width: 1000px;
