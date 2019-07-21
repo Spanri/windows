@@ -36,11 +36,11 @@
           <form prevent-default>
             <h4 style="color: black;text-align: center">Обратная связь</h4>
             <p>Имя</p>
-            <input v-model="nameFeedback" placeholder="Введите имя">
+            <input required v-model="nameFeedback" placeholder="Введите имя">
             <p>Email</p>
-            <input v-model="email2" placeholder="Введите email">
+            <input required v-model="email2" placeholder="Введите email">
             <p>Текст сообщения</p>
-            <textarea v-model="message" placeholder="Введите текст сообщения"></textarea>
+            <textarea required v-model="message" placeholder="Введите текст сообщения"></textarea>
             <button @click.prevent="feedback()" style="text-align: center">ОТПРАВИТЬ</button>
             <p v-if="response" style="padding-top: 20px; padding-bottom: 0">{{response}}</p>
           </form>

@@ -49,7 +49,7 @@ export default {
 }
 @media screen and (max-width: 1200px){
   .banner0{
-    background-position: -200px 0;
+    background-position: -350px 0;
   }
   .banner{
     padding-right: 40px;
@@ -57,13 +57,13 @@ export default {
 }
 @media screen and (max-width: 840px){
   .banner0{
-    background-position: -400px 0;
+    background-position: -550px 0;
   }
 }
 @media screen and (max-width: 680px){
   .banner0{
     background-size: 1300px 280px;
-    background-position: -450px 0;
+    background-position: -440px 0;
   }
 }
 @media screen and (max-width: 500px){

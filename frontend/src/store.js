@@ -19,14 +19,16 @@ function unique(arr) {
 export default new Vuex.Store({
   state: {
     shopItems: [],
+    shopItems2: [],
     status: '',
   },
   getters: {
     getShopItems: state => state.shopItems,
+    getShopItems2: state => state.shopItems2,
     getStatus: state => state.status,
   },
   mutations: {
-    setShopItemId: (state, resp) => {
+    setShopItemQuantity: (state, resp) => {
       // Vue.set(state, 'shopItems', 200);
       state.shopItems = [
         ...state.shopItems.filter(s => s.id !== resp.id),
@@ -40,8 +42,7 @@ export default new Vuex.Store({
       let b = state.shopItems.filter(s => s.id == resp.id);
       if(b.length == 0) {
         state.shopItems.push({
-          id: resp.id,
-          quantity: resp.quantity,
+          ...resp,
         });
         Vue.set(state, 'status', 200);
       } else {
@@ -49,8 +50,25 @@ export default new Vuex.Store({
       }
     },
     deleteShopItem: (state, resp) => {
-      let f = state.shopItems.findIndex(s => s == resp);
-      Vue.delete(state.shopItems, f)
+      state.shopItems = state.shopItems.filter(e => e.id != resp);
+    },
+    setShopItem2Quantity: (state, resp) => {
+      state.shopItems2 = [
+        ...state.shopItems2.filter(s => s.title !== resp.title),
+        {
+          ...resp,
+        }
+      ]
+    },
+    setShopItem2: (state, resp) => {
+      state.shopItems2.push({
+        id: state.shopItems2.length,
+        ...resp,
+        quantity: 1,
+      });
+    },
+    deleteShopItem2: (state, resp) => {
+      state.shopItems2 = state.shopItems2.filter(e => e.id != resp);
     },
   },
   plugins: [createPersistedState()],

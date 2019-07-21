@@ -56,11 +56,13 @@
             </select>
           </div>
         </div>
+        <p>Вы можете добавить в корзину это окно, однако его точная стоимость будет известна после замера нашими специалистами.
+           Количество таких окон можно будет выбрать в корзине.</p>
         <div class="total">
-          <p>ИТОГО: {{formFactor}} {{width}} {{height}} {{windowSill}} {{tint}} {{lamination}}</p>
-          <button>ДОБАВИТЬ В КОРЗИНУ</button>
+          <p>ИТОГО: {{formFactor}} {{width}} {{height}} {{windowSill}} {{tint}} {{lamination}} (для отладки - 100)</p>
+          <button @click="addToCart()">ДОБАВИТЬ В КОРЗИНУ</button>
         </div>
-
+        <p v-if="added">{{added}}</p>
       </div>
     </div>
   </div>
@@ -81,8 +83,27 @@ export default {
       windowSill: '',
       tint: '',
       lamination: '',
+      total: 100,
+      added: '',
     }
   },
+  methods: {
+    addToCart(){
+      this.$store.commit('setShopItem2', {
+        formFactor: this.formFactor,
+        width: this.width,
+        height: this.height,
+        windowSill: this.windowSill,
+        tint: this.tint,
+        lamination: this.lamination,
+        price: this.total
+      });
+      this.added = 'Добавлено.';
+      setTimeout(() => {
+          this.added = '';
+        }, 3000);
+    }
+  }
 }
 </script>
 
@@ -194,6 +215,14 @@ input[type=range]::-ms-thumb {
   background: rgb(32, 165, 226);
   cursor: pointer;
 }
+.total{
+  display: grid;
+  grid-template-columns: auto max-content;
+  margin: 30px;
+}
+.total p{
+  margin: auto 0;
+}
 @media screen and (max-width: 680px){
   .form-factor img{
     height: 80px;
@@ -244,6 +273,15 @@ input[type=range]::-ms-thumb {
   .dimensions{
     grid-template-columns: auto;
     grid-template-rows: auto auto;
+  }
+  .total{
+    grid-template-columns: auto;
+    grid-template-rows: auto max-content;
+  }
+  button{
+    max-width: 212px;
+    margin: 0;
+    margin-top: 15px;
   }
 }
 </style>

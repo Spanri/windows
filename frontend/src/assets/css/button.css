@@ -10,7 +10,7 @@ button{
 button::before{
   position: absolute;
   opacity: .4;
-  left: -227px;
+  left: -237px;
   top: 0;
   height: 100%;
   width: 100%;
@@ -20,5 +20,5 @@ button::before{
   transition: all 0.8s ease 0s;
 }
 button:hover::before{
-	left: 227px;
+	left: 237px;
 }

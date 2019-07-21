@@ -5,6 +5,7 @@ import Contacts from '@/components/Contacts'
 import Shop from '@/components/Shop'
 import ShopItem from '@/components/ShopItem'
 import Cart from '@/components/Cart'
+import Confirmation from '@/components/Confirmation'
 import Calculator from '@/components/Calculator'
 import NotFound from '@/components/NotFound'
 
@@ -41,7 +42,12 @@ export default new Router({
       component: Cart,
     },
     {
-      path: '/calc',
+      path: '/confirmation',
+      name: 'Confirmation',
+      component: Confirmation,
+    },
+    {
+      path: '/calculator',
       name: 'Calculator',
       component: Calculator
     },

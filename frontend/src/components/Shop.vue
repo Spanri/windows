@@ -3,9 +3,8 @@
     <Banner text="Товары"></Banner>
     <div class="shop">
       <nav>
-        <p>Окна</p>
-        <p>Подоконники</p>
-        <p>Ламинация</p>
+        <p v-bind:key="index"
+            v-for="(item, index) in navItems">{{item.title}}</p>
       </nav>
       <div class="right-part">
         <div
@@ -35,6 +34,12 @@ export default {
   },
   data () {
     return {
+      navItems: [
+        {id: 3, title: 'Окна'},
+        {id: 0, title: 'Балконы'},
+        {id: 1, title: 'Арки'},
+        {id: 2, title: 'Другое'},
+      ],
       items: [],
       price: '',
       title: '',
@@ -76,6 +81,7 @@ export default {
   grid-template-columns: max-content auto;
 }
 nav{
+  align-self: start;
   min-width: 200px;
   height: min-content;
   box-shadow: 0px 0px 10px rgb(233, 230, 230);
@@ -110,6 +116,7 @@ nav p:hover{
 }
 .card img{
   height: 200px;
+  padding: 15px;
 }
 .card p{
   padding: 7px 15px;
