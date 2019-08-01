@@ -115,6 +115,8 @@ nav p:hover{
   cursor: pointer;
 }
 .card img{
+  object-fit: cover;
+  width: 200px;
   height: 200px;
   padding: 15px;
 }
@@ -123,5 +125,23 @@ nav p:hover{
   text-align: left;
   color: black;
   margin: 0;
+}
+@media screen and (max-width: 1300px){
+  nav{
+    margin-left: 20px;
+  }
+}
+@media screen and (max-width: 600px){
+  .shop{
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+  }
+  nav{
+    margin-bottom: 20px;
+    margin-left: 0;
+  }
+  nav p{
+    text-align: center;
+  }
 }
 </style>

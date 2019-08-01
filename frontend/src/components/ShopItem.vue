@@ -162,7 +162,11 @@ input[type=number]
 }
 @media screen and (max-width: 400px){
   img{
-    height: auto;
+    max-height: 200px;
+  }
+  button{
+    margin-top: 30px;
+    margin-left: 0;
   }
 }
 </style>

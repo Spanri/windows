@@ -5,8 +5,8 @@
         <table>
           <thead>
             <tr>
-              <th>Товар</th>
-              <th>Цена</th>
+              <th style="padding-left: 15px;">Товар</th>
+              <th class="price">Цена</th>
               <th>{{quantity}}</th>
               <th>Всего</th>
               <th></th>
@@ -16,9 +16,11 @@
             <tr
                 v-bind:key="index"
                 v-for="(item, index) in items">
-              <td>
-                <img :src="path+'/static/'+item.img">
-                <p class="title" @click="goToShopItem(item)">{{item.title}}</p>
+              <td class="title">
+                <div class="img">
+                  <img :src="path+'/static/'+item.img">
+                </div>
+                <p class="title2" @click="goToShopItem(item)">{{item.title}}</p>
               </td>
               <td>{{item.price}}</td>
               <td>
@@ -37,7 +39,9 @@
                 v-bind:key="index"
                 v-for="(item, index) in items2">
               <td>
-                <img :src="path+'/static/'+item.img">
+                <div class="img">
+                  <img src="../assets/window.jpg">
+                </div>
                 <p class="title2">
                   Окно на заказ {{item.formFactor}}, {{item.width}}*{{item.height}}, подоконник {{item.windowSill}},
                   отлив {{item.tint}}, ламинация {{item.lamination}}
@@ -211,9 +215,14 @@ button{
 tr > *{
   margin: auto 0;
 }
-tr img{
-  height: 80px;
+.img{
   margin: 15px;
+  display: inline-block;
+}
+tr img{
+  object-fit: cover;
+  width: 80px;
+  height: 80px;
 }
 tr p{
   padding: 7px 15px;
@@ -229,6 +238,7 @@ thead th{
   color: #777777;
   border-bottom: 1px rgb(233, 230, 230) solid;
   padding: .75rem;
+  padding-left: 0;
 }
 table {
   border-collapse: collapse;
@@ -244,10 +254,14 @@ td{
 td p:hover{
   cursor: pointer;
 }
-.title, .title2{
-  display:inline-block;
+.title{
   color: #777777;
-  max-width: 480px;
+  word-wrap: break-word;
+}
+.title2{
+  display: inline-block;
+  color: #777777;
+  max-width: 400px;
   word-wrap: break-word;
 }
 .delete{
@@ -275,13 +289,25 @@ button{
   margin-top: 20px;
   margin-left: 0;
 }
+.price{
+  padding-right: 40px;
+}
 @media screen and (max-width: 600px){
   .cart{
     font-size: 13px;
   }
   tr img{
-    height: 40px;
+    /* height: 40px; */
     margin: 10px;
+  }
+  .title2{
+    padding-left: 25px;
+  }
+  .img{
+    display: block;
+  }
+  .price{
+    padding-right: 15px;
   }
   .delete{
     padding-right: 10px;
