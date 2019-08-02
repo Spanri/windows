@@ -36,7 +36,7 @@
               <td class="delete" @click="deleteShopItem(item)">{{deleteText}}</td>
             </tr>
             <tr
-                v-bind:key="index"
+                v-bind:key="index+items.length"
                 v-for="(item, index) in items2">
               <td>
                 <div class="img">
@@ -70,7 +70,9 @@
             </tr>
           </tbody>
         </table>
-        <form prevent-default class="contacts" v-if="items.length != 0">
+        <form prevent-default class="contacts" v-if="items.length != 0 || items2.length != 0">
+          <p>Имя:</p>
+          <input required v-model="name" type="text" placeholder="Введите ваше имя">
           <p>Номер телефона:</p>
           <input required v-model="phone" type="text" placeholder="Введите номер телефона">
           <p>Email:</p>
@@ -79,8 +81,8 @@
           <textarea required v-model="address" type="text" placeholder="Введите адрес"></textarea>
           <br>
           <button @click.prevent="goToConfirmation">ОФОРМИТЬ</button>
-          <p v-if="process" style="margin-top: -30px; margin-bottom: 40px;">{{process}}</p>
         </form>
+        <p v-if="process" class="process">{{process}}</p>
     </div>
   </div>
 </template>
@@ -105,6 +107,7 @@ export default {
       description: '',
       quantity: '',
       path: path,
+      name: '',
       phone: '',
       email: '',
       address: '',
@@ -150,10 +153,13 @@ export default {
       });
     })
   },
-  computed:{
-    total(){
+  computed: {
+    total() {
       let t = 0;
       this.items.forEach(s => {
+        t += s.quantity*s.price;
+      })
+      this.items2.forEach(s => {
         t += s.quantity*s.price;
       })
       return t;
@@ -189,8 +195,34 @@ export default {
       this.$store.commit('setShopItem2Quantity', this.items2[i]);
     },
     goToConfirmation(){
-      this.process = 'Обработка... (ничего не произойдет)'
-
+      this.process = 'Обработка...'
+      axios.get(path+'/api/contacts')
+      .then(response => {
+        let resp = response.data.filter(d => d.parameter == 'email');
+        console.log(resp[0].description);
+        axios.post(path+'/api/cart',{
+          name: this.name,
+          phone: this.phone,
+          email: this.email,
+          email_where: resp[0].description,
+          address: this.address,
+          cart: this.items,
+          cart2: this.items2,
+          total: this.total
+        })
+        .then(response => {
+          this.name = this.phone = this.email = this.address = '';
+          this.items = this.items2 = [];
+          this.$store.commit('deleteAllShopItems');
+          this.$store.commit('deleteAllShopItems2');
+          this.process = `
+            Заказ принят. На почту отправлен список того, что вы заказали. Вскоре
+            с вами свяжутся для дальнейшего обсуждения заказа.`;
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      })
     }
   }
 }
@@ -291,6 +323,10 @@ button{
 }
 .price{
   padding-right: 40px;
+}
+.process{
+  margin-top: 10px;
+  margin-bottom: 40px;
 }
 @media screen and (max-width: 600px){
   .cart{

@@ -1,4 +1,5 @@
-from models import Product, db, User, Contact
+import datetime
+from models import Product, db, User, Contact, ProductCategory
 from views import MyAdminIndexView, MyModelView, ImageView
 import os
 import os.path as op
@@ -81,6 +82,7 @@ admin = Admin(
 )
 
 admin.add_view(MyModelView(Contact, db.session, 'Контакты'))
+admin.add_view(MyModelView(ProductCategory, db.session, 'Категории'))
 admin.add_view(ImageView(Product, db.session, 'Товары'))
 
 db.init_app(app)
@@ -118,6 +120,53 @@ def mailApi():
         return str(e)
 
 
+@app.route('/api/cart', methods=['POST'])
+def cart():
+    try:
+        data = json.loads(request.data)
+        time = str(datetime.datetime.now())
+        msg = Message("У вас сделали заказ, " + time, recipients=[data['email_where']])
+        cart = ''
+        for el in data['cart']:
+            cart += (
+                "Товар: " + el['title'] + 
+                # "Категория: " + str(el['category']) +
+                "\nЦена: " + str(el['price']) +
+                "\nКоличество: " + str(el['quantity']) +
+                "\nСтоимость : " + str(el['price'] * el['quantity']) +
+                "\n\n"
+            )
+        print(data['cart2'])
+        for el in data['cart2']:
+            cart += (
+                "Товар: Окно на заказ " + el['formFactor'] + ", " + el['width'] + '*' + el['height'] + ", подоконник " + el['windowSill'] +
+                ", отлив " + el['tint'] + ", ламинация " + el['lamination'] +
+                # "Категория: " + str(el['category']) +
+                "\nЦена: " + str(el['price']) +
+                "\nКоличество: " + str(el['quantity']) +
+                "\nСтоимость : " + str(el['price'] * el['quantity']) +
+                "\n\n"
+            )
+            print(cart)
+        
+        message = (
+            "Имя: " + data['name'] +
+            "\nEmail: " + data['email'] +
+            "\nТелефон: " + data['phone'] +
+            "\nАдрес: " + data['address'] +
+            "\n\n" + cart +
+            "Всего: " + str(data['total'])
+        )
+        msg.body = message
+        mail.send(msg)
+
+        msg = Message("Вы сделали заказ, " + time, recipients=[data['email']])
+        msg.body = message
+        mail.send(msg)
+        return 'Mail sent!'
+    except Exception as e:
+        return str(e)
+
 @app.route('/api/feedback', methods=['GET'])
 def feedback():
     try:
@@ -145,6 +194,19 @@ def product():
 def products():
     try:
         p = Product.query.all()
+        response = []
+        for idx, val in enumerate(p):
+            v = json.dumps(val.serialize(), ensure_ascii=False).encode('utf8')
+            response.append(yaml.load(v, Loader=yaml.FullLoader))
+        return jsonify(response)
+    except Exception as e:
+        return str(e)
+
+
+@app.route('/api/productCategories', methods=['GET'])
+def productCategories():
+    try:
+        p = ProductCategory.query.all()
         response = []
         for idx, val in enumerate(p):
             v = json.dumps(val.serialize(), ensure_ascii=False).encode('utf8')

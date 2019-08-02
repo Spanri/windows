@@ -3,14 +3,19 @@
     <Banner text="Товары"></Banner>
     <div class="shop">
       <nav>
-        <p v-bind:key="index"
-            v-for="(item, index) in navItems">{{item.title}}</p>
+        <p
+            @click="navItem = item;"
+            :class="navItem == item ? 'active' : ''"
+            v-bind:key="index"
+            v-for="(item, index) in navItems">
+          {{item.category}}
+        </p>
       </nav>
       <div class="right-part">
         <div
             class="card"
             v-bind:key="index"
-            v-for="(item, index) in items"
+            v-for="(item, index) in itemsFilter"
             @click="goToShopItem(item)">
           <img :src="path+'/static/'+item.img">
           <p>{{item.title}}</p>
@@ -34,12 +39,8 @@ export default {
   },
   data () {
     return {
-      navItems: [
-        {id: 3, title: 'Окна'},
-        {id: 0, title: 'Балконы'},
-        {id: 1, title: 'Арки'},
-        {id: 2, title: 'Другое'},
-      ],
+      navItems: [],
+      navItem: '',
       items: [],
       price: '',
       title: '',
@@ -58,6 +59,27 @@ export default {
     .catch(error => {
       console.log(error)
     })
+    axios.get(path+'/api/productCategories')
+    .then(response => {
+      let resp = response.data;
+      resp.forEach(r => {
+        this.navItems.push(r);
+      });
+      this.items.forEach((el,i) => {
+        let n = this.navItems.find(x => x.id === el.category);
+        this.items[i].category = n.category;
+      })
+      console.log(this.items);
+      this.navItem = resp[0];
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  },
+  computed: {
+    itemsFilter(){
+      return this.items.filter(i => i.category == this.navItem.category)
+    }
   },
   methods: {
     goToShopItem(item){
@@ -125,6 +147,9 @@ nav p:hover{
   text-align: left;
   color: black;
   margin: 0;
+}
+.active{
+  color: #007CB7;
 }
 @media screen and (max-width: 1300px){
   nav{

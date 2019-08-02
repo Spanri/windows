@@ -52,6 +52,9 @@ export default new Vuex.Store({
     deleteShopItem: (state, resp) => {
       state.shopItems = state.shopItems.filter(e => e.id != resp);
     },
+    deleteAllShopItems: (state) => {
+      state.shopItems = [];
+    },
     setShopItem2Quantity: (state, resp) => {
       state.shopItems2 = [
         ...state.shopItems2.filter(s => s.title !== resp.title),
@@ -69,6 +72,9 @@ export default new Vuex.Store({
     },
     deleteShopItem2: (state, resp) => {
       state.shopItems2 = state.shopItems2.filter(e => e.id != resp);
+    },
+    deleteAllShopItems2: (state) => {
+      state.shopItems2 = [];
     },
   },
   plugins: [createPersistedState()],

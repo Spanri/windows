@@ -4,35 +4,13 @@ from flask_admin.form.upload import ImageUploadField
 
 db = SQLAlchemy()
 
-class Product(db.Model):
-    __tablename__ = 'products'
-
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), unique=True)
-    description = db.Column(db.String(1000), nullable=True)
-    price = db.Column(db.Integer)
-    img = db.Column(db.Unicode(128))
-    # category = relationship(
-    #     "ProductCategory", backref="product", lazy=True)
-
-    def serialize(self):
-        return {
-            'id': self.id,
-            'title': self.title,
-            'description': self.description,
-            'price': self.price,
-            'img': self.img,
-        }
-
-    def __repr__(self):
-        return '<id {}>'.format(self.id)
 
 class ProductCategory(db.Model):
     __tablename__ = 'productcategoties'
 
     id = db.Column(db.Integer, primary_key=True)
     category = db.Column(db.String(200), unique=True)
-    # product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
+    category_of_prod = relationship("Product", backref="category", lazy=True)
 
     def serialize(self):
         return {
@@ -41,7 +19,31 @@ class ProductCategory(db.Model):
         }
 
     def __repr__(self):
-        return '<id {}>'.format(self.id)
+        return self.category
+
+class Product(db.Model):
+    __tablename__ = 'products'
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), unique=True)
+    description = db.Column(db.String(1000), nullable=True)
+    price = db.Column(db.Integer)
+    img = db.Column(db.Unicode(128))
+    product_category_id = db.Column(db.Integer, db.ForeignKey(ProductCategory.id))
+    # product_category = db.relationship('ProductCategory')
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'price': self.price,
+            'img': self.img,
+            'category': self.product_category_id,
+        }
+
+    def __repr__(self):
+        return self.title
 
 class Contact(db.Model):
     __tablename__ = 'contacts'

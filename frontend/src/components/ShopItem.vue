@@ -46,7 +46,15 @@ export default {
     axios.post(path+'/api/product', {id: this.id})
     .then(response => {
       this.item = response.data;
-
+      axios.get(path+'/api/productCategories')
+      .then(response => {
+        let resp = response.data;
+        resp.forEach(r => {
+          this.navItems.push(r);
+        });
+        let n = resp.find(x => x.id === el.category);
+        this.items[i].category = n.category;
+      })
     })
     .catch(error => {
       console.log(error)
