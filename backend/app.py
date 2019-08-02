@@ -130,7 +130,7 @@ def cart():
         for el in data['cart']:
             cart += (
                 "Товар: " + el['title'] + 
-                # "Категория: " + str(el['category']) +
+                "Категория: " + str(el['category']) +
                 "\nЦена: " + str(el['price']) +
                 "\nКоличество: " + str(el['quantity']) +
                 "\nСтоимость : " + str(el['price'] * el['quantity']) +
@@ -141,7 +141,6 @@ def cart():
             cart += (
                 "Товар: Окно на заказ " + el['formFactor'] + ", " + el['width'] + '*' + el['height'] + ", подоконник " + el['windowSill'] +
                 ", отлив " + el['tint'] + ", ламинация " + el['lamination'] +
-                # "Категория: " + str(el['category']) +
                 "\nЦена: " + str(el['price']) +
                 "\nКоличество: " + str(el['quantity']) +
                 "\nСтоимость : " + str(el['price'] * el['quantity']) +

@@ -80,7 +80,7 @@
           <p>Адрес:</p>
           <textarea required v-model="address" type="text" placeholder="Введите адрес"></textarea>
           <br>
-          <button @click.prevent="goToConfirmation">ОФОРМИТЬ</button>
+          <button @click.prevent="goToConfirmation">ПОДТВЕРДИТЬ</button>
         </form>
         <p v-if="process" class="process">{{process}}</p>
     </div>
@@ -102,6 +102,7 @@ export default {
     return {
       items: [],
       items2: [],
+      navItems: [],
       price: '',
       title: '',
       description: '',
@@ -126,6 +127,22 @@ export default {
         let sRes = response.data;
         sRes.quantity = s.quantity;
         this.items.push(sRes);
+        axios.get(path+'/api/productCategories')
+        .then(respon => {
+          let resp = respon.data;
+          resp.forEach(r => {
+            this.navItems.push(r);
+          });
+          this.items.forEach((el,i) => {
+            let n = this.navItems.find(x => x.id === el.category);
+            this.items[i].category = n.category;
+          })
+          console.log(this.items);
+          this.navItem = resp[0];
+        })
+        .catch(error => {
+          console.log(error)
+        })
       })
       .catch(error => {
         console.log(error)
@@ -211,6 +228,7 @@ export default {
           total: this.total
         })
         .then(response => {
+          console.log(response);
           this.name = this.phone = this.email = this.address = '';
           this.items = this.items2 = [];
           this.$store.commit('deleteAllShopItems');
@@ -222,6 +240,9 @@ export default {
         .catch(error => {
           console.log(error)
         })
+      })
+      .catch(error => {
+        console.log(error)
       })
     }
   }
