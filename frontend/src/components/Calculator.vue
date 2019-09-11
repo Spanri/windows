@@ -34,25 +34,28 @@
             <div class="h p" style="transform: rotate(90deg);">{{height}}</div>
           </div>
           <div class="drop-down">
-            <p>Подоконник:</p>
+            <p>Тип окна:</p>
             <select v-model="windowSill">
-              <option>не требуется</option>
-              <option>150мм</option>
-              <option>200мм</option>
+              <option>Глухое</option>
+              <option>Одностворчатое поворотно - откидное</option>
+              <option>Двустворчатое: поворотное + поворотно - откидное</option>
             </select>
             <p>Отлив:</p>
             <select v-model="tint">
-              <option>золотой</option>
-              <option>серебрянный</option>
-              <option>лиловый</option>
+              <option>100</option>
+              <option>150</option>
+              <option>200</option>
+              <option>250</option>
+              <option>300</option>
+              <option>350</option>
+              <option>400</option>
+              <option>450</option>
             </select>
             <p>Ламинация:</p>
             <select v-model="lamination">
-              <option>не требуется</option>
-              <option>внешняя</option>
-              <option>внутренняя</option>
-              <option>2-х сторонняя</option>
-              <option>в массе</option>
+              <option>Односторонняя</option>
+              <option>Двусторонняя</option>
+              <option>Белая</option>
             </select>
           </div>
         </div>
@@ -170,7 +173,7 @@ select{
   border: rgb(202, 201, 201) 2px solid;
   border-radius: 5px;
   margin-bottom: 15px;
-  min-width: 150px;
+  width: 150px;
 }
 select:hover{
   cursor: pointer
@@ -193,7 +196,6 @@ input[type=range]::-webkit-slider-thumb {
   border-radius: 50%;
   background: rgb(32, 165, 226);
   cursor: pointer;
-  margin-top: -5px; /* Вам нужно указать значение для поля в Chrome, но в Firefox и IE это происходит автоматически */
 }
 
 /* Тоже самое для Firefox */

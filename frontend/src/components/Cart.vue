@@ -43,8 +43,8 @@
                   <img src="../assets/window.jpg">
                 </div>
                 <p class="title2">
-                  Окно на заказ {{item.formFactor}}, {{item.width}}*{{item.height}}, подоконник {{item.windowSill}},
-                  отлив {{item.tint}}, ламинация {{item.lamination}}
+                  Окно на заказ "{{item.formFactor}}", размер: {{item.width}}*{{item.height}}, тип окна: "{{item.windowSill}}",
+                  отлив: "{{item.tint}}", ламинация: "{{item.lamination}}"
                 </p>
               </td>
               <td>{{item.price}}</td>

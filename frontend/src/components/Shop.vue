@@ -55,22 +55,22 @@ export default {
       resp.forEach(r => {
         this.items.push(r);
       });
-    })
-    .catch(error => {
-      console.log(error)
-    })
-    axios.get(path+'/api/productCategories')
-    .then(response => {
-      let resp = response.data;
-      resp.forEach(r => {
-        this.navItems.push(r);
-      });
-      this.items.forEach((el,i) => {
-        let n = this.navItems.find(x => x.id === el.category);
-        this.items[i].category = n.category;
+      axios.get(path+'/api/productCategories')
+      .then(response => {
+        let resp = response.data;
+        resp.forEach(r => {
+          this.navItems.push(r);
+        });
+        this.items.forEach((el,i) => {
+          let n = this.navItems.find(x => x.id === el.category);
+          this.items[i].category = n.category;
+        })
+        console.log(this.items);
+        this.navItem = resp[0];
       })
-      console.log(this.items);
-      this.navItem = resp[0];
+      .catch(error => {
+        console.log(error)
+      })
     })
     .catch(error => {
       console.log(error)

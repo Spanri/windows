@@ -12,6 +12,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_mail import Mail, Message
 from flask_cors import CORS
 import flask_login as login
+from ftp import ftp
 
 from wtforms import fields, widgets
 from sqlalchemy.event import listens_for
